@@ -1,0 +1,177 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "config:semverAllMonthly",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)",
+    ":semanticCommitScope(deps)"
+  ],
+  "schedule": ["before 4am on monday"],
+  "timezone": "UTC",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    },
+    {
+      "matchPackageNames": ["@types/node"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser"
+      ],
+      "groupName": "TypeScript ESLint packages",
+      "groupSlug": "typescript-eslint"
+    },
+    {
+      "matchPackageNames": [
+        "eslint",
+        "eslint-config-prettier",
+        "eslint-plugin-prettier"
+      ],
+      "groupName": "ESLint packages",
+      "groupSlug": "eslint"
+    },
+    {
+      "matchPackageNames": ["prettier"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["husky", "lint-staged"],
+      "groupName": "Git hooks packages",
+      "groupSlug": "git-hooks"
+    },
+    {
+      "matchPackageNames": [
+        "@semantic-release/changelog",
+        "@semantic-release/git",
+        "@semantic-release/github",
+        "@semantic-release/npm",
+        "semantic-release"
+      ],
+      "groupName": "Semantic Release packages",
+      "groupSlug": "semantic-release"
+    },
+    {
+      "matchPackageNames": [
+        "@commitlint/cli",
+        "@commitlint/config-conventional"
+      ],
+      "groupName": "Commitlint packages",
+      "groupSlug": "commitlint"
+    },
+    {
+      "matchPackageNames": ["jest", "@types/jest", "ts-jest"],
+      "groupName": "Jest packages",
+      "groupSlug": "jest"
+    },
+    {
+      "matchPackageNames": ["@types/jest", "jest", "ts-jest"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": [
+        "fastify",
+        "@fastify/cors",
+        "@fastify/helmet",
+        "@fastify/rate-limit"
+      ],
+      "groupName": "Fastify packages",
+      "groupSlug": "fastify"
+    },
+    {
+      "matchPackageNames": [
+        "@temporalio/client",
+        "@temporalio/worker",
+        "@temporalio/workflow"
+      ],
+      "groupName": "Temporal packages",
+      "groupSlug": "temporal"
+    },
+    {
+      "matchPackageNames": ["@anthropic-ai/sdk"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["@morph/api"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["lean4"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["cargo", "rustc"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["python"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": ["at any time"],
+    "assignees": ["@fraware"],
+    "reviewers": ["@fraware"]
+  },
+  "securityUpdates": {
+    "enabled": true,
+    "schedule": ["at any time"],
+    "assignees": ["@fraware"],
+    "reviewers": ["@fraware"]
+  },
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 10,
+  "branchConcurrentLimit": 5,
+  "repositories": ["fraware/self-healing-CI"],
+  "onboarding": false,
+  "requireConfig": true,
+  "commitMessageAction": "Update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageSuffix": "",
+  "prTitle": "chore(deps): update {{depName}} to {{newVersion}}",
+  "prBodyTemplate": "## Description\n\nThis PR updates {{depName}} from {{currentVersion}} to {{newVersion}}.\n\n## Changes\n\n- {{#if isSingleUpdate}}Updated {{depName}} from {{currentVersion}} to {{newVersion}}{{else}}Updated dependencies:{{#each upgrades}}- {{depName}} from {{currentVersion}} to {{newVersion}}{{/each}}{{/if}}\n\n## Type of Change\n\n- [x] 🧹 Chore (updates to dependencies, etc)\n\n## Scope\n\n- [x] deps - Dependency updates\n\n## Testing\n\n- [x] Dependencies updated successfully\n- [x] No breaking changes introduced\n- [x] All tests pass\n\n## Checklist\n\n- [x] My code follows the style guidelines of this project\n- [x] I have performed a self-review of my own code\n- [x] My changes generate no new warnings\n- [x] New and existing unit tests pass locally with my changes\n\n## Additional Notes\n\nThis is an automated dependency update by Renovate.\n\n## Related Issues\n\nCloses #{{number}}",
+  "labels": ["dependencies", "automated"],
+  "assignees": ["@fraware"],
+  "reviewers": ["@fraware"],
+  "automerge": false,
+  "automergeType": "pr",
+  "platformAutomerge": false,
+  "rebaseWhen": "auto",
+  "recreateClosed": true,
+  "rebaseLabel": "rebase",
+  "rebaseWhenUnlimited": true,
+  "rangeStrategy": "auto",
+  "bumpVersion": "patch",
+  "commitMessage": "chore(deps): update {{depName}} to {{newVersion}}",
+  "prBodyColumns": ["Package", "Change", "Age"],
+  "prBodyDefinitions": {
+    "Package": "`{{depName}}`",
+    "Change": "`{{currentVersion}}` → `{{newVersion}}`",
+    "Age": "{{#if schedule}}![age](https://badges.renovateapi.com/packages/npm/{{depName}}/{{newVersion}/age-slim){{else}}![age](https://badges.renovateapi.com/packages/npm/{{depName}}/{{newVersion}/age-slim){{/if}}"
+  }
+}

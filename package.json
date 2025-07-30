@@ -1,0 +1,61 @@
+{
+  "name": "self-healing-ci",
+  "version": "0.0.0-development",
+  "description": "Self-healing CI system with AI-powered diagnosis and automated fixes",
+  "private": true,
+  "packageManager": "pnpm@8.15.5",
+  "engines": {
+    "node": "^20.0.0",
+    "pnpm": "^8.15.0"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "build:clean": "pnpm clean && pnpm install && pnpm build",
+    "clean": "pnpm -r clean",
+    "dev": "pnpm -r dev",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "test": "pnpm -r test",
+    "test:coverage": "pnpm -r test:coverage",
+    "type-check": "pnpm -r type-check",
+    "format": "pnpm -r format",
+    "format:fix": "pnpm -r format:fix",
+    "prepare": "husky install",
+    "semantic-release": "semantic-release",
+    "validate": "pnpm lint && pnpm type-check && pnpm test",
+    "security:audit": "pnpm audit",
+    "security:scan": "pnpm run -r security:scan",
+    "proofs:validate": "pnpm run -r proofs:validate",
+    "monitoring:start": "pnpm run -r monitoring:start",
+    "docs:build": "pnpm run -r docs:build"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.2",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.2.6",
+    "@semantic-release/npm": "^10.0.6",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "semantic-release": "^22.0.7"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "npx eslint --fix",
+      "npx prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "npx prettier --write"
+    ]
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "rust/*",
+    "lean/*",
+    "services/*"
+  ]
+}

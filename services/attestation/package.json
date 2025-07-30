@@ -1,0 +1,53 @@
+{
+  "name": "@self-healing-ci/attestation",
+  "version": "1.0.0",
+  "description": "Supply chain attestation service for self-healing CI with SLSA v1 provenance and cosign signatures",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "type-check": "tsc --noEmit",
+    "attest:generate": "node dist/generate-attestation.js",
+    "attest:verify": "node dist/verify-attestation.js",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "axios": "^1.6.0",
+    "cosign": "^0.1.0",
+    "slsa": "^0.1.0",
+    "crypto": "^1.0.0",
+    "fs-extra": "^11.2.0",
+    "path": "^0.12.7",
+    "yaml": "^2.3.0",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/fs-extra": "^11.0.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.3.0",
+    "prettier": "^3.1.0",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0"
+  },
+  "keywords": [
+    "attestation",
+    "slsa",
+    "cosign",
+    "supply-chain-security",
+    "provenance",
+    "signatures"
+  ],
+  "author": "Self-Healing CI Team",
+  "license": "MIT"
+} 

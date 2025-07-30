@@ -1,0 +1,31 @@
+# Global owners
+* @fraware
+
+# Core infrastructure
+/.github/ @fraware
+/apps/github-app/ @fraware
+/apps/temporal-orchestrator/ @fraware
+/packages/core/ @fraware
+/packages/diagnosis/ @fraware
+/packages/patching/ @fraware
+
+# AI and ML components
+/packages/claude-integration/ @fraware
+/packages/morph-integration/ @fraware
+/packages/freestyle-testing/ @fraware
+
+# Formal verification
+/lean/ @fraware
+/packages/lean-integration/ @fraware
+
+# Low-latency components
+/rust/ @fraware
+
+# Security and compliance
+/.github/workflows/security.yml @fraware
+/SECURITY.md @fraware
+/docs/security/ @fraware
+
+# Documentation
+/docs/ @fraware
+/README.md @fraware 

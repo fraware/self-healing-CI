@@ -1,0 +1,53 @@
+{
+  "name": "@self-healing-ci/fuzzing",
+  "version": "1.0.0",
+  "description": "Differential fuzzing service for self-healing CI with cargo fuzz and JS Fuzzilli harnesses",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "type-check": "tsc --noEmit",
+    "fuzz:rust": "cargo fuzz run",
+    "fuzz:js": "node src/fuzzilli-runner.js",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "axios": "^1.6.0",
+    "cargo-fuzz": "^0.1.0",
+    "fuzzilli": "^0.1.0",
+    "glob": "^10.3.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.0",
+    "fs-extra": "^11.2.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/glob": "^8.1.0",
+    "@types/fs-extra": "^11.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.3.0",
+    "prettier": "^3.1.0",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0"
+  },
+  "keywords": [
+    "fuzzing",
+    "cargo-fuzz",
+    "fuzzilli",
+    "differential-testing",
+    "security",
+    "regression-testing"
+  ],
+  "author": "Self-Healing CI Team",
+  "license": "MIT"
+}

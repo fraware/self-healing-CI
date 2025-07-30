@@ -1,0 +1,52 @@
+{
+  "name": "@self-healing-ci/claude",
+  "version": "0.0.0-development",
+  "description": "Enhanced Claude AI integration with token management and streaming",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.18.0",
+    "zod": "^3.22.4",
+    "winston": "^3.11.0",
+    "redis": "^4.6.12",
+    "ioredis": "^5.3.2",
+    "axios": "^1.6.2",
+    "node-cron": "^3.0.3",
+    "uuid": "^9.0.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/uuid": "^9.0.7",
+    "@types/jest": "^29.5.8",
+    "typescript": "^5.3.3",
+    "tsx": "^4.6.2",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "nock": "^13.4.0"
+  },
+  "engines": {
+    "node": "^20.0.0"
+  },
+  "keywords": [
+    "claude",
+    "ai",
+    "anthropic",
+    "streaming",
+    "token-management",
+    "self-healing-ci"
+  ],
+  "author": "Self-Healing CI Team",
+  "license": "MIT"
+}
