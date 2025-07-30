@@ -2,6 +2,10 @@
 
 A state-of-the-art Continuous Integration system that automatically diagnoses, patches, and validates code issues using AI-powered analysis and formal verification.
 
+<p align="center">
+  <img src=".github/assets/selfheal.png" alt="Self Healing CI Logo" width="400"/>
+</p>
+
 ## Architecture
 
 ```
