@@ -1,0 +1,66 @@
+{
+  "security": {
+    "cors": {
+      "allowedOrigins": ["https://github.com", "https://api.github.com"],
+      "allowedMethods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "allowedHeaders": [
+        "Content-Type",
+        "Authorization",
+        "X-GitHub-Event",
+        "X-GitHub-Delivery",
+        "X-Hub-Signature-256"
+      ]
+    },
+    "rateLimiting": {
+      "windowMs": 60000,
+      "maxRequests": 100,
+      "skipSuccessfulRequests": false,
+      "skipFailedRequests": false
+    },
+    "inputValidation": {
+      "maxInputLength": 10000,
+      "maxPayloadSize": "10MB",
+      "allowedContentTypes": ["application/json"]
+    },
+    "headers": {
+      "securityHeaders": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()"
+      },
+      "csp": {
+        "default-src": ["'self'"],
+        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "data:", "https:"],
+        "font-src": ["'self'"],
+        "connect-src": [
+          "'self'",
+          "https://api.github.com",
+          "https://api.claude.ai"
+        ],
+        "frame-ancestors": ["'none'"],
+        "base-uri": ["'self'"],
+        "form-action": ["'self'"]
+      }
+    },
+    "authentication": {
+      "githubWebhook": {
+        "signatureValidation": true,
+        "secretMinLength": 16
+      },
+      "jwt": {
+        "algorithm": "RS256",
+        "expiresIn": "1h",
+        "refreshTokenExpiresIn": "7d"
+      }
+    },
+    "logging": {
+      "securityEvents": true,
+      "piiRedaction": true,
+      "auditTrail": true
+    }
+  }
+}

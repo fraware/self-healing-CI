@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import dotenv from 'dotenv';
+import fs from 'fs';
 import { SelfHealingCIApp } from './app.js';
 import { logger } from './utils/logger.js';
 
@@ -47,8 +48,33 @@ async function main(): Promise<void> {
     // Start the server
     const port = parseInt(process.env.PORT || '3000', 10);
     const host = process.env.HOST || '0.0.0.0';
+    const useHttps = process.env.USE_HTTPS === 'true';
+    const certPath = process.env.SSL_CERT_PATH;
+    const keyPath = process.env.SSL_KEY_PATH;
 
-    await server.listen({ port, host });
+    if (useHttps && certPath && keyPath) {
+      // HTTPS configuration
+      const httpsOptions = {
+        cert: fs.readFileSync(certPath),
+        key: fs.readFileSync(keyPath),
+        ca: process.env.SSL_CA_PATH
+          ? fs.readFileSync(process.env.SSL_CA_PATH)
+          : undefined,
+      };
+
+      await server.listen({ port, host, https: httpsOptions });
+      logger.info('Self-Healing CI GitHub App started with HTTPS', {
+        port,
+        host,
+      });
+    } else {
+      // HTTP configuration
+      await server.listen({ port, host });
+      logger.info('Self-Healing CI GitHub App started with HTTP', {
+        port,
+        host,
+      });
+    }
 
     logger.info('Self-Healing CI GitHub App started successfully', {
       port,

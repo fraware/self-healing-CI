@@ -1,4 +1,3 @@
-import { DynamoDB } from 'aws-sdk';
 import Redis from 'ioredis';
 import type { WorkflowRunEvent } from '../types/workflow-run.js';
 import { getWorkflowRunId } from '../types/workflow-run.js';
@@ -20,7 +19,7 @@ export interface DeduplicationResult {
 
 export class DeduplicationService {
   private redis: Redis | null = null;
-  private dynamoDb: DynamoDB.DocumentClient | null = null;
+  // private dynamoDb: DynamoDB.DocumentClient | null = null;
   private readonly config: Required<DeduplicationConfig>;
   private readonly ttlSeconds: number;
 
@@ -63,14 +62,14 @@ export class DeduplicationService {
       });
 
       // Initialize DynamoDB connection
-      this.dynamoDb = new DynamoDB.DocumentClient({
-        region: this.config.awsRegion,
-        maxRetries: 3,
-        httpOptions: {
-          timeout: 5000,
-          connectTimeout: 3000,
-        },
-      });
+      // this.dynamoDb = new DynamoDB.DocumentClient({
+      //   region: this.config.awsRegion,
+      //   maxRetries: 3,
+      //   httpOptions: {
+      //     timeout: 5000,
+      //     connectTimeout: 3000,
+      //   },
+      // });
 
       // Test connections
       await this.testConnections();
@@ -102,23 +101,23 @@ export class DeduplicationService {
     }
 
     // Test DynamoDB
-    if (this.dynamoDb) {
-      promises.push(
-        this.dynamoDb
-          .get({
-            TableName: this.config.dynamoTableName,
-            Key: { workflowRunId: 'test' },
-          })
-          .promise()
-          .then(() => {
-            logger.info('DynamoDB connection test successful');
-          })
-          .catch(() => {
-            // It's okay if the test key doesn't exist
-            logger.info('DynamoDB connection test successful');
-          })
-      );
-    }
+    // if (this.dynamoDb) {
+    //   promises.push(
+    //     this.dynamoDb
+    //       .get({
+    //         TableName: this.config.dynamoTableName,
+    //         Key: { workflowRunId: 'test' },
+    //       })
+    //       .promise()
+    //       .then(() => {
+    //         logger.info('DynamoDB connection test successful');
+    //       })
+    //       .catch(() => {
+    //         // It's okay if the test key doesn't exist
+    //         logger.info('DynamoDB connection test successful');
+    //       })
+    //   );
+    // }
 
     await Promise.all(promises);
   }
@@ -138,14 +137,14 @@ export class DeduplicationService {
         return redisResult;
       }
 
-      // Fallback to DynamoDB
-      const dynamoResult = await this.checkDynamoDB(workflowRunId);
-      if (dynamoResult !== null) {
-        return dynamoResult;
-      }
+      // Fallback to DynamoDB - temporarily disabled
+      // const dynamoResult = await this.checkDynamoDB(workflowRunId);
+      // if (dynamoResult !== null) {
+      //   return dynamoResult;
+      // }
 
-      // If not found in either, store in both
-      await this.storeInBoth(workflowRunId, timestamp, ttl);
+      // If not found in either, store in Redis only (DynamoDB temporarily disabled)
+      await this.storeInRedis(workflowRunId, timestamp, ttl);
 
       return {
         isDuplicate: false,
@@ -197,8 +196,9 @@ export class DeduplicationService {
   }
 
   /**
-   * Check DynamoDB for existing workflow run
+   * Check if a workflow run event is a duplicate in DynamoDB - temporarily disabled
    */
+  /*
   private async checkDynamoDB(
     workflowRunId: string
   ): Promise<DeduplicationResult | null> {
@@ -231,10 +231,12 @@ export class DeduplicationService {
       return null;
     }
   }
+  */
 
   /**
-   * Store workflow run in both Redis and DynamoDB
+   * Store workflow run in both Redis and DynamoDB - temporarily disabled
    */
+  /*
   private async storeInBoth(
     workflowRunId: string,
     timestamp: Date,
@@ -262,6 +264,7 @@ export class DeduplicationService {
 
     await Promise.all(promises);
   }
+  */
 
   /**
    * Store workflow run in Redis
@@ -285,8 +288,9 @@ export class DeduplicationService {
   }
 
   /**
-   * Store workflow run in DynamoDB
+   * Store workflow run in DynamoDB - temporarily disabled
    */
+  /*
   private async storeInDynamoDB(
     workflowRunId: string,
     timestamp: Date,
@@ -304,11 +308,11 @@ export class DeduplicationService {
         ttl,
         createdAt: new Date().toISOString(),
       },
-      ConditionExpression: 'attribute_not_exists(workflowRunId)',
     };
 
     await this.dynamoDb.put(params).promise();
   }
+  */
 
   /**
    * Clean up expired entries

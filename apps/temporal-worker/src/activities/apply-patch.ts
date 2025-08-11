@@ -71,8 +71,8 @@ export async function applyPatch(
 
     return {
       success: true,
-      patchSha: morphResult.patchSha,
-      filesChanged: morphResult.filesChanged,
+      patchSha: morphResult.patchSha || undefined,
+      filesChanged: morphResult.filesChanged || undefined,
     };
   } catch (error) {
     logger.error('Patch application failed', {

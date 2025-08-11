@@ -1,9 +1,11 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { Context, Probot } from 'probot';
+import { SecurityMiddleware } from './middleware/security.js';
 import { DeduplicationService } from './services/deduplication.js';
 import { TemporalClient } from './services/temporal.js';
 import type { WorkflowRunEvent } from './types/workflow-run.js';
 import { logger } from './utils/logger.js';
+import { SecurityUtils } from './utils/security.js';
 
 // Type for environment variables
 interface ProcessEnv {
@@ -19,6 +21,16 @@ export class SelfHealingCIApp {
   private temporalService: TemporalClient;
 
   constructor() {
+    // Validate environment variables for security
+    try {
+      SecurityUtils.validateEnvironment();
+    } catch (error) {
+      logger.error('Environment validation failed:', error);
+      throw new Error(
+        `Environment validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+
     this.app = new Probot({
       appId: (process.env as ProcessEnv)['GITHUB_APP_ID'] || '',
       privateKey: (process.env as ProcessEnv)['GITHUB_PRIVATE_KEY'] || '',
@@ -27,6 +39,10 @@ export class SelfHealingCIApp {
 
     // Get the server from probot
     this.server = (this.app as any).server as FastifyInstance;
+
+    // Register security middleware
+    SecurityMiddleware.register(this.server);
+
     this.deduplicationService = new DeduplicationService();
     this.temporalService = new TemporalClient();
 

@@ -74,28 +74,34 @@ pnpm build
 ```bash
 # GitHub App Configuration
 GITHUB_APP_ID=your_app_id
-GITHUB_APP_PRIVATE_KEY=your_private_key
+GITHUB_PRIVATE_KEY=your_private_key
 GITHUB_WEBHOOK_SECRET=your_webhook_secret
 
 # AI Services
-ANTHROPIC_API_KEY=your_claude_api_key
+CLAUDE_API_KEY=your_claude_api_key
 MORPH_API_KEY=your_morph_api_key
 MORPH_API_URL=https://api.morph.dev
 
 # Infrastructure
 TEMPORAL_SERVER_URL=temporal:7233
 REDIS_URL=redis://localhost:6379
-DOCKER_SOCKET=/var/run/docker.sock
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 
-# Security
-OIDC_PROVIDER_URL=your_oidc_provider
-OIDC_CLIENT_ID=your_client_id
-OIDC_CLIENT_SECRET=your_client_secret
+# Security & HTTPS (Optional)
+USE_HTTPS=false
+SSL_CERT_PATH=/path/to/certificate.pem
+SSL_KEY_PATH=/path/to/private-key.pem
+SSL_CA_PATH=/path/to/ca-bundle.pem
 
 # Monitoring
-PROMETHEUS_URL=http://localhost:9090
-GRAFANA_URL=http://localhost:3000
-JAEGER_URL=http://localhost:16686
+PROMETHEUS_PORT=9090
+JAEGER_ENDPOINT=http://localhost:14268/api/traces
+
+# Development
+NODE_ENV=development
+LOG_LEVEL=info
 ```
 
 ## Development
@@ -159,6 +165,10 @@ pnpm proofs:validate
 
 # Security scans
 pnpm security:scan
+
+# Security audit
+pnpm security:audit
+pnpm security:check
 ```
 
 ## Monitoring
@@ -184,6 +194,17 @@ pnpm security:scan
 
 ## Security
 
+### Security Features
+
+- **Input Validation & Sanitization**: XSS and SQL injection prevention
+- **Security Headers**: Comprehensive browser security (CSP, HSTS, XSS Protection)
+- **CORS Protection**: Controlled cross-origin access with origin validation
+- **Rate Limiting**: Abuse prevention with configurable thresholds
+- **GitHub Webhook Validation**: HMAC signature verification for all webhooks
+- **Environment Security**: Secure configuration management and validation
+- **Error Handling**: No information disclosure, secure error responses
+- **Automated Security Auditing**: Regular security checks and vulnerability scanning
+
 ### Authentication
 
 - **OIDC Integration**: Short-lived tokens for all external services
@@ -202,6 +223,29 @@ pnpm security:scan
 - **Cosign**: Image signing and verification
 - **SBOM**: Software bill of materials for all dependencies
 
+### Security Commands
+
+```bash
+# Run comprehensive security audit
+pnpm security:audit
+
+# Check for dependency vulnerabilities
+pnpm audit
+
+# Run all security checks
+pnpm security:check
+```
+
+### Security Configuration
+
+The system includes a security configuration file (`config/security.example.json`) that covers:
+
+- CORS settings and allowed origins
+- Rate limiting parameters
+- Input validation rules
+- Security headers configuration
+- Authentication requirements
+
 ## Documentation
 
 ### Runbooks
@@ -214,7 +258,6 @@ pnpm security:scan
 
 - [System Architecture](docs/architecture/system.md)
 - [Data Flow](docs/architecture/data-flow.md)
-- [Security Model](docs/architecture/security.md)
 
 ### API Reference
 
@@ -263,4 +306,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Issues**: [GitHub Issues](https://github.com/your-org/self-healing-ci/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/your-org/self-healing-ci/discussions)
 - **Documentation**: [Project Wiki](https://github.com/your-org/self-healing-ci/wiki)
-- **Security**: [Security Policy](SECURITY.md)

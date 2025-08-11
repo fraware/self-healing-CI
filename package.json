@@ -23,8 +23,9 @@
     "prepare": "husky install",
     "semantic-release": "semantic-release",
     "validate": "pnpm lint && pnpm type-check && pnpm test",
-    "security:audit": "pnpm audit",
+    "security:audit": "node scripts/security-audit.js",
     "security:scan": "pnpm run -r security:scan",
+    "security:check": "pnpm security:audit && pnpm audit",
     "proofs:validate": "pnpm run -r proofs:validate",
     "monitoring:start": "pnpm run -r monitoring:start",
     "docs:build": "pnpm run -r docs:build"

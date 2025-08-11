@@ -1,4 +1,4 @@
-import { logger } from '../../github-app/src/utils/logger.js';
+import { logger } from '../utils/logger.js';
 
 export interface CloudEvent {
   type: string;
